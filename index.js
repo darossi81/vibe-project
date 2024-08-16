@@ -16,26 +16,50 @@ app.get('/', (req, res) => {
       <body>
         <h1>Vibe Survey</h1>
         <form action="/submit" method="post">
-          <label for="vibe">How was your day?</label><br><br>
-          <select name="vibe" id="vibe">
-            <option value="1">😞</option>
-            <option value="2">🙁</option>
-            <option value="3">😐</option>
-            <option value="4">🙂</option>
-            <option value="5">😄</option>
-          </select><br><br>
-          <button type="submit">Submit</button>
-        </form>
+  <input type="hidden" name="token" value="GENERATED_TOKEN_HERE">
+  <label for="vibe">How was your day?</label><br><br>
+  <select name="vibe" id="vibe">
+    <option value="1">😞</option>
+    <option value="2">🙁</option>
+    <option value="3">😐</option>
+    <option value="4">🙂</option>
+    <option value="5">😄</option>
+  </select><br><br>
+  <button type="submit">Submit</button>
+</form>
+
       </body>
     </html>
   `);
 });
 
 // Route to handle form submission
-app.post('/submit', (req, res) => {
-  // For now, just send a simple response
+const { SurveyToken, SurveyResponse } = require('./models');
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/submit', async (req, res) => {
+  const { token, vibe } = req.body;
+
+  // Validate the token
+  const surveyToken = await SurveyToken.findOne({ where: { token } });
+  if (!surveyToken) {
+    return res.status(400).send('Invalid or expired token.');
+  }
+
+  // Store the response
+  await SurveyResponse.create({
+    survey_id: surveyToken.survey_id,
+    response: vibe,
+  });
+
+  // Invalidate the token if it's single-use
+  await surveyToken.destroy();
+
   res.send('Thank you for submitting your vibe!');
 });
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
