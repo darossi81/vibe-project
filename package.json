@@ -4,7 +4,8 @@
   "description": "What's the Vibe?",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"  
   },
   "repository": {
     "type": "git",
@@ -12,9 +13,12 @@
   },
   "author": "Darren Rossiter",
   "license": "ISC",
-    "private": true,
+  "private": true,
   "bugs": {
     "url": "https://github.com/darossi81/vibe-survey/issues"
   },
-  "homepage": "https://github.com/darossi81/vibe-survey#readme"
+  "homepage": "https://github.com/darossi81/vibe-survey#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
