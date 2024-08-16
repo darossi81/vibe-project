@@ -1,9 +1,14 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const crypto = require('crypto');
+const { SurveyToken, SurveyResponse, sequelize } = require('./models');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware to serve static files (like CSS)
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Route to serve the survey form
 app.get('/', (req, res) => {
@@ -16,29 +21,23 @@ app.get('/', (req, res) => {
       <body>
         <h1>Vibe Survey</h1>
         <form action="/submit" method="post">
-  <input type="hidden" name="token" value="GENERATED_TOKEN_HERE">
-  <label for="vibe">How was your day?</label><br><br>
-  <select name="vibe" id="vibe">
-    <option value="1">😞</option>
-    <option value="2">🙁</option>
-    <option value="3">😐</option>
-    <option value="4">🙂</option>
-    <option value="5">😄</option>
-  </select><br><br>
-  <button type="submit">Submit</button>
-</form>
-
+          <input type="hidden" name="token" value="GENERATED_TOKEN_HERE">
+          <label for="vibe">How was your day?</label><br><br>
+          <select name="vibe" id="vibe">
+            <option value="1">😞</option>
+            <option value="2">🙁</option>
+            <option value="3">😐</option>
+            <option value="4">🙂</option>
+            <option value="5">😄</option>
+          </select><br><br>
+          <button type="submit">Submit</button>
+        </form>
       </body>
     </html>
   `);
 });
 
 // Route to handle form submission
-const { SurveyToken, SurveyResponse } = require('./models');
-const bodyParser = require('body-parser');
-
-app.use(bodyParser.urlencoded({ extended: true }));
-
 app.post('/submit', async (req, res) => {
   const { token, vibe } = req.body;
 
@@ -59,7 +58,6 @@ app.post('/submit', async (req, res) => {
 
   res.send('Thank you for submitting your vibe!');
 });
-
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
