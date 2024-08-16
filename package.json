@@ -1,0 +1,20 @@
+{
+  "name": "vibe-project",
+  "version": "1.0.0",
+  "description": "What's the Vibe?",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darossi81/vibe-survey.git"
+  },
+  "author": "Darren Rossiter",
+  "license": "ISC",
+    "private": true,
+  "bugs": {
+    "url": "https://github.com/darossi81/vibe-survey/issues"
+  },
+  "homepage": "https://github.com/darossi81/vibe-survey#readme"
+}
